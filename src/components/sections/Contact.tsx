@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SOCIAL_LINKS } from '../../utils/constants';
-import { Mail, ArrowUp } from 'lucide-react';
 import ScrollReveal from '../ui/ScrollReveal';
+import { Mail, ArrowUp, Copy, Check, Radio } from 'lucide-react';
 
-const Contact: React.FC = () => {
+interface ContactProps {
+    onOpenFeedback: () => void;
+}
+
+const Contact: React.FC<ContactProps> = ({ onOpenFeedback }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyEmail = () => {
+      navigator.clipboard.writeText('sakshamsingh4848@gmail.com');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <footer id="contact" className="bg-surface border-t border-border pt-32 pb-16 relative overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-6 sm:px-12 lg:px-20 relative z-10">
@@ -22,13 +34,47 @@ const Contact: React.FC = () => {
                 Currently exploring high-impact AI opportunities. If you're looking for an engineer to architect neural systems or full-stack agents, let's connect.
               </p>
               
-              <a 
-                href="mailto:sakshamsingh4848@gmail.com" 
-                className="inline-flex items-center gap-5 px-10 py-6 bg-primary text-primary-foreground font-black rounded-[2rem] hover:bg-accent transition-all transform hover:scale-105 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] uppercase tracking-widest text-sm"
-              >
-                <Mail className="w-6 h-6" />
-                <span>Initialize Transmission</span>
-              </a>
+              <div className="flex flex-col gap-8">
+                  {/* Primary CTA - Opens Modal */}
+                  <div>
+                    <button 
+                        onClick={onOpenFeedback}
+                        className="inline-flex items-center gap-5 px-10 py-6 bg-primary text-primary-foreground font-black rounded-[2rem] hover:bg-accent transition-all transform hover:scale-[1.02] active:scale-95 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] uppercase tracking-widest text-sm group"
+                    >
+                        <Radio className="w-6 h-6 animate-pulse" />
+                        <span>Initialize Transmission</span>
+                    </button>
+                    <p className="text-[10px] text-textMuted font-mono mt-3 uppercase tracking-wider pl-4">
+                        *Secure channel via ALEX AI
+                    </p>
+                  </div>
+
+                  {/* Manual Override - The Quirky Email Copy */}
+                  <div className="p-6 rounded-[2rem] border border-dashed border-border bg-surface/50 max-w-md hover:border-accent/40 transition-colors">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
+                        <p className="text-[10px] font-black text-secondary uppercase tracking-[0.2em]">Manual Override Protocol</p>
+                      </div>
+                      <p className="text-sm text-textMuted mb-4 leading-relaxed">
+                          Prefer standard SMTP packets? You can bypass the AI and ping the mainframe directly:
+                      </p>
+                      <button 
+                        onClick={handleCopyEmail}
+                        className="flex items-center justify-between w-full p-4 bg-background border border-border rounded-xl group hover:border-accent transition-all active:scale-95"
+                      >
+                          <span className="font-mono text-sm font-bold text-textMain">sakshamsingh4848@gmail.com</span>
+                          {copied ? (
+                              <div className="flex items-center gap-2 text-green-500 text-xs font-black uppercase tracking-wider">
+                                  <Check className="w-4 h-4" /> Copied
+                              </div>
+                          ) : (
+                              <div className="flex items-center gap-2 text-textMuted group-hover:text-accent text-xs font-black uppercase tracking-wider transition-colors">
+                                  <Copy className="w-4 h-4" /> Copy
+                              </div>
+                          )}
+                      </button>
+                  </div>
+              </div>
             </div>
 
             <div className="w-full md:w-auto pt-10">

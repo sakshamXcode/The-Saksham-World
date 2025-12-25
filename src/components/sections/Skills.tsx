@@ -3,6 +3,7 @@ import { SKILLS, EDUCATION, CERTIFICATES, TECH_RESOURCES } from '../../utils/con
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Tooltip } from 'recharts';
 import ScrollReveal from '../ui/ScrollReveal';
 
+
 const coreCompetencyData = [
     { subject: 'Frontend', A: 90, fullMark: 100 },
     { subject: 'Backend', A: 85, fullMark: 100 },
@@ -12,7 +13,11 @@ const coreCompetencyData = [
     { subject: 'DevOps', A: 60, fullMark: 100 },
 ];
 
-const Skills: React.FC = () => {
+interface SkillsProps {
+    shouldRenderChart?: boolean;
+}
+
+const Skills: React.FC<SkillsProps> = ({ shouldRenderChart = true }) => {
   return (
     <section id="skills" className="py-32 bg-background border-t border-border">
       <div className="max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-20">
@@ -63,34 +68,42 @@ const Skills: React.FC = () => {
                       <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity">
                          <div className="w-full h-full bg-[radial-gradient(circle_at_center,var(--accent-color)_0%,transparent_70%)]"></div>
                       </div>
-                      <ResponsiveContainer width="100%" height="100%">
-                          <RadarChart cx="50%" cy="55%" outerRadius="75%" data={coreCompetencyData}>
-                              <PolarGrid stroke="var(--border-color)" strokeDasharray="3 3" />
-                              <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--text-muted)', fontSize: 12, fontWeight: 900, letterSpacing: '0.1em' }} />
-                              <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                              <Radar
-                                  name="Saksham"
-                                  dataKey="A"
-                                  stroke="var(--accent-color)"
-                                  strokeWidth={3}
-                                  fill="var(--accent-color)"
-                                  fillOpacity={0.1}
-                              />
-                              <Tooltip 
-                                  contentStyle={{ 
-                                      backgroundColor: 'var(--bg-color)', 
-                                      borderColor: 'var(--accent-color)', 
-                                      color: 'var(--text-main)',
-                                      borderRadius: '20px',
-                                      fontSize: '12px',
-                                      fontWeight: 'bold',
-                                      boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-                                      borderWidth: '2px'
-                                  }}
-                                  itemStyle={{ color: 'var(--accent-color)' }}
-                              />
-                          </RadarChart>
-                      </ResponsiveContainer>
+                      
+                      {/* Only render chart when visible to prevent 'width(0)' errors */}
+                      {shouldRenderChart ? (
+                          <ResponsiveContainer width="100%" height="100%">
+                              <RadarChart cx="50%" cy="55%" outerRadius="75%" data={coreCompetencyData}>
+                                  <PolarGrid stroke="var(--border-color)" strokeDasharray="3 3" />
+                                  <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--text-muted)', fontSize: 12, fontWeight: 900, letterSpacing: '0.1em' }} />
+                                  <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                                  <Radar
+                                      name="Saksham"
+                                      dataKey="A"
+                                      stroke="var(--accent-color)"
+                                      strokeWidth={3}
+                                      fill="var(--accent-color)"
+                                      fillOpacity={0.1}
+                                  />
+                                  <Tooltip 
+                                      contentStyle={{ 
+                                          backgroundColor: 'var(--bg-color)', 
+                                          borderColor: 'var(--accent-color)', 
+                                          color: 'var(--text-main)',
+                                          borderRadius: '20px',
+                                          fontSize: '12px',
+                                          fontWeight: 'bold',
+                                          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+                                          borderWidth: '2px'
+                                      }}
+                                      itemStyle={{ color: 'var(--accent-color)' }}
+                                  />
+                              </RadarChart>
+                          </ResponsiveContainer>
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                            <span className="text-accent/50 text-xs font-mono animate-pulse">Initializing Visualization...</span>
+                        </div>
+                      )}
                   </div>
                 </ScrollReveal>
             </div>
