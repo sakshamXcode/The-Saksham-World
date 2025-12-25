@@ -3,6 +3,7 @@ import { EXPERIENCE, TECH_RESOURCES } from '../../utils/constants';
 import { Briefcase, Calendar, ExternalLink } from 'lucide-react';
 import ScrollReveal from '../ui/ScrollReveal';
 
+
 const Experience: React.FC = () => {
   return (
     <section id="experience" className="py-32 bg-surface border-t border-border overflow-x-hidden">
@@ -13,24 +14,15 @@ const Experience: React.FC = () => {
           <div className="mb-24">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-6">
                <div>
-                  <div className="inline-flex items-center gap-3 px-6 py-2.5 rounded-full border border-border bg-surface/80 backdrop-blur-md shadow-xl transition-all duration-300 cursor-default mb-8">
-                      <span className="relative flex h-2.5 w-2.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-yellow-500 shadow-[0_0_12px_rgba(234,179,8,0.9)]"></span>
-                      </span>
-                      <span className="text-[11px] font-black font-mono text-secondary tracking-[0.3em] uppercase">Status: Production_Active</span>
-                  </div>
-                  
-                  <span className="text-secondary text-xs font-mono uppercase tracking-[0.4em] block mb-2">Track Record</span>
                   <h2 className="text-5xl md:text-7xl font-black text-textMain tracking-tighter">Experience</h2>
                </div>
             </div>
           </div>
         </ScrollReveal>
 
-        <div className="relative border-l border-border/50 ml-4 md:ml-0 md:pl-0 space-y-24">
+        <div className="relative border-l border-border/50 ml-3 md:ml-0 md:pl-0 space-y-24">
           {EXPERIENCE.map((exp, index) => (
-            <div key={exp.id} className="relative pl-10 md:pl-0 group">
+            <div key={exp.id} className="relative group">
               <ScrollReveal delay={index * 100} direction="right">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-0">
                     {/* Date Column (Desktop) */}
@@ -40,20 +32,22 @@ const Experience: React.FC = () => {
                     </div>
 
                     {/* Content Column */}
-                    <div className="md:col-span-9 md:pl-16 md:border-l md:border-border/50">
-                        <div className="md:hidden flex items-center text-[11px] text-textMuted font-black font-mono mb-6 uppercase tracking-[0.3em]">
-                          <Calendar className="w-4 h-4 mr-2 text-accent" />
+                    <div className="md:col-span-9 pl-10 md:pl-16 md:border-l md:border-border/50 relative">
+                        {/* Mobile Timeline Dot - Positioned on the main vertical line */}
+                        <div className="md:hidden absolute -left-[7px] top-2 w-3.5 h-3.5 rounded-full bg-background border-2 border-border z-10 group-hover:border-accent transition-colors"></div>
+
+                        {/* Mobile Date - Spaced properly from the dot */}
+                        <div className="md:hidden flex items-center text-[11px] text-textMuted font-black font-mono mb-6 uppercase tracking-[0.2em]">
+                          <Calendar className="w-4 h-4 mr-3 text-accent shrink-0" />
                           {exp.duration}
                         </div>
-
-                        <div className="md:hidden absolute -left-[6px] top-2 w-3 h-3 rounded-full bg-background border-2 border-border z-10"></div>
 
                         <div className="bg-background/40 backdrop-blur-xl border border-border p-8 sm:p-12 rounded-[3rem] hover:border-accent/30 hover:shadow-[0_40px_80px_rgba(0,0,0,0.06)] transition-all duration-700 transform hover:-translate-y-3 group">
                             <h3 className="text-2xl sm:text-4xl font-black text-textMain tracking-tight mb-2">
                               {exp.role}
                             </h3>
                             <div className="flex items-center gap-3 mb-10">
-                              <Briefcase className="w-5 h-5 text-accent" />
+                              <Briefcase className="w-5 h-5 text-accent shrink-0" />
                               <p className="text-lg sm:text-2xl text-secondary font-bold">{exp.company}</p>
                             </div>
 

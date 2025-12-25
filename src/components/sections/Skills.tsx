@@ -3,7 +3,6 @@ import { SKILLS, EDUCATION, CERTIFICATES, TECH_RESOURCES } from '../../utils/con
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Tooltip } from 'recharts';
 import ScrollReveal from '../ui/ScrollReveal';
 
-
 const coreCompetencyData = [
     { subject: 'Frontend', A: 90, fullMark: 100 },
     { subject: 'Backend', A: 85, fullMark: 100 },
@@ -27,14 +26,6 @@ const Skills: React.FC<SkillsProps> = ({ shouldRenderChart = true }) => {
             <div>
                 <ScrollReveal>
                   <div className="mb-12">
-                      <div className="inline-flex items-center gap-3 px-6 py-2.5 rounded-full border border-border bg-surface/80 backdrop-blur-md shadow-xl hover:scale-105 transition-transform duration-300 cursor-default mb-8">
-                          <span className="relative flex h-3 w-3">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-3 w-3 bg-indigo-500 shadow-[0_0_12px_rgba(99,102,241,0.9)]"></span>
-                          </span>
-                          <span className="text-xs font-black font-mono text-secondary tracking-[0.2em] uppercase">System: Initialized</span>
-                      </div>
-                      <span className="text-secondary text-xs font-mono uppercase tracking-[0.4em]">Arsenal</span>
                       <h2 className="text-5xl font-black text-textMain mt-3 tracking-tighter">Technical Stack</h2>
                   </div>
                 </ScrollReveal>
@@ -63,18 +54,21 @@ const Skills: React.FC<SkillsProps> = ({ shouldRenderChart = true }) => {
                 </ScrollReveal>
 
                 <ScrollReveal delay={400}>
-                  <div className="p-10 rounded-[3rem] border border-border h-[400px] relative bg-surface/50 shadow-inner group overflow-hidden">
-                      <h3 className="text-secondary text-[11px] font-black uppercase tracking-[0.3em] absolute top-10 left-10">Competency Radar</h3>
-                      <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity">
+                  <div className="p-4 sm:p-10 rounded-[3rem] border border-border h-[400px] relative bg-surface/50 shadow-inner group overflow-hidden">
+                      <h3 className="text-secondary text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] absolute top-6 left-8 sm:top-10 sm:left-10 z-10">Competency Radar</h3>
+                      <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none">
                          <div className="w-full h-full bg-[radial-gradient(circle_at_center,var(--accent-color)_0%,transparent_70%)]"></div>
                       </div>
                       
                       {/* Only render chart when visible to prevent 'width(0)' errors */}
                       {shouldRenderChart ? (
                           <ResponsiveContainer width="100%" height="100%">
-                              <RadarChart cx="50%" cy="55%" outerRadius="75%" data={coreCompetencyData}>
+                              <RadarChart cx="50%" cy="55%" outerRadius="70%" data={coreCompetencyData}>
                                   <PolarGrid stroke="var(--border-color)" strokeDasharray="3 3" />
-                                  <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--text-muted)', fontSize: 12, fontWeight: 900, letterSpacing: '0.1em' }} />
+                                  <PolarAngleAxis 
+                                    dataKey="subject" 
+                                    tick={{ fill: 'var(--text-muted)', fontSize: 10, fontWeight: 900, letterSpacing: '0.05em' }} 
+                                  />
                                   <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                                   <Radar
                                       name="Saksham"
@@ -113,14 +107,6 @@ const Skills: React.FC<SkillsProps> = ({ shouldRenderChart = true }) => {
                  <ScrollReveal delay={200}>
                    <div>
                       <div className="mb-12">
-                           <div className="inline-flex items-center gap-3 px-6 py-2.5 rounded-full border border-border bg-surface/80 backdrop-blur-md shadow-xl hover:scale-105 transition-transform duration-300 cursor-default mb-8">
-                              <span className="relative flex h-3 w-3">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-3 w-3 bg-teal-500 shadow-[0_0_12px_rgba(20,184,166,0.9)]"></span>
-                              </span>
-                              <span className="text-xs font-black font-mono text-secondary tracking-[0.2em] uppercase">Auth: Certified</span>
-                          </div>
-                          <span className="text-secondary text-xs font-mono uppercase tracking-[0.4em]">Foundation</span>
                           <h2 className="text-5xl font-black text-textMain mt-3 tracking-tighter">Education</h2>
                       </div>
                       
@@ -129,7 +115,7 @@ const Skills: React.FC<SkillsProps> = ({ shouldRenderChart = true }) => {
                               <div key={idx} className="p-10 rounded-[2.5rem] border border-border bg-surface/30 hover:border-accent/40 transition-all duration-500 shadow-sm hover:shadow-xl">
                                   <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
                                       <h3 className="text-xl sm:text-2xl font-black text-textMain tracking-tight leading-tight">{edu.degree}</h3>
-                                      <span className="text-accent font-mono font-black text-xs border border-accent/20 px-4 py-1.5 rounded-full bg-accent/5">{edu.score}</span>
+                                      <span className="text-accent font-mono font-black text-xs border border-accent/20 px-4 py-1.5 rounded-full bg-accent/5 whitespace-nowrap">{edu.score}</span>
                                   </div>
                                   <p className="text-secondary text-base sm:text-lg font-bold">{edu.institution}</p>
                                   <p className="text-xs text-textMuted mt-6 font-mono font-bold tracking-widest uppercase">{edu.duration}</p>
@@ -148,7 +134,7 @@ const Skills: React.FC<SkillsProps> = ({ shouldRenderChart = true }) => {
                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           {CERTIFICATES.map((cert, idx) => (
                               <li key={idx} className="flex items-center gap-4 p-6 rounded-[1.5rem] border border-border bg-surface/30 hover:bg-surface transition-all duration-300 hover:scale-[1.02]">
-                                  <div className="w-2 h-2 bg-accent rounded-full shadow-[0_0_8px_var(--accent-color)]"></div>
+                                  <div className="w-2 h-2 bg-accent rounded-full shadow-[0_0_8px_var(--accent-color)] shrink-0"></div>
                                   <p className="text-secondary text-sm font-bold leading-relaxed">{cert}</p>
                               </li>
                           ))}

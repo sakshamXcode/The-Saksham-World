@@ -66,18 +66,25 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
     setErrorMsg(null);
 
     // --- EMAILJS CONFIGURATION ---
-    // Please set these variables in your .env file
-    const YOUR_SERVICE_ID = (import.meta as any).env?.VITE_EMAILJS_SERVICE_ID; 
-    const YOUR_TEMPLATE_ID = (import.meta as any).env?.VITE_EMAILJS_TEMPLATE_ID; 
-    const YOUR_PUBLIC_KEY = (import.meta as any).env?.VITE_EMAILJS_PUBLIC_KEY;
+    const YOUR_SERVICE_ID = (import.meta as any).env?.VITE_APP_EMAILJS_SERVICE_ID; 
+    const YOUR_TEMPLATE_ID = (import.meta as any).env?.VITE_APP_EMAILJS_TEMPLATE_ID; 
+    const YOUR_PUBLIC_KEY = (import.meta as any).env?.VITE_APP_EMAILJS_PUBLIC_KEY;
     
     const replyToEmail = email.trim() || 'sakshamsingh4848@gmail.com';
     const userEmailLabel = email.trim() || 'Not Provided';
 
+    // DEBUG: Check keys (Will appear in console if missing)
+    if (!YOUR_SERVICE_ID || !YOUR_TEMPLATE_ID || !YOUR_PUBLIC_KEY) {
+        console.error("EmailJS Missing Keys:", { 
+            ServiceID: !!YOUR_SERVICE_ID, 
+            TemplateID: !!YOUR_TEMPLATE_ID, 
+            PublicKey: !!YOUR_PUBLIC_KEY 
+        });
+    }
+
     try {
         if (!YOUR_SERVICE_ID) {
-            console.warn("⚠️ EmailJS Keys missing. Check your .env configuration.");
-            throw new Error("Email service not configured.");
+            throw new Error("Email service ID not configured.");
         }
         
         await emailjs.send(
@@ -102,7 +109,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
     } catch (err: any) {
         console.error("Email Error:", err);
         setIsSending(false);
-        setErrorMsg("System Offline: Unable to deliver mail. Please try again later.");
+        setErrorMsg("System Offline: Unable to deliver mail. Please check console.");
     }
   };
 
@@ -222,7 +229,6 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
                         )}
 
                         <div className="flex gap-3 mt-2">
-                            {/* Option to go back and change name is still useful, but minimal */}
                             <button 
                                 type="button" 
                                 onClick={() => setStep(0)} 

@@ -366,9 +366,9 @@ const AIChatBot: React.FC<AIChatBotProps> = ({ isOpen, isBooting, onToggle, acti
 
           <div className="p-6 sm:p-10 bg-zinc-900 border-t border-white/5 pb-10">
             <form onSubmit={handleSend} className="flex items-center gap-2 sm:gap-4 bg-zinc-950/50 border border-white/10 rounded-3xl p-2 focus-within:border-accent/50 transition-all shadow-sm">
-                <input ref={inputRef} type="text" value={input} onChange={(e) => setInput(e.target.value)} placeholder={isListening ? "Listening..." : "Query ALEX..."} className="flex-1 bg-transparent text-gray-100 px-4 py-3 outline-none text-sm font-bold placeholder:text-gray-500" disabled={isLoading} />
-                <button type="button" onClick={toggleSpeech} className={`p-3 rounded-xl transition-colors ${isListening ? 'text-red-500 bg-red-500/10' : 'text-gray-400 hover:text-white'}`}><Mic className="w-5 h-5" /></button>
-                <button type="submit" disabled={isLoading || !input.trim()} className="p-4 bg-accent text-white rounded-2xl hover:bg-accent/80 transition-all active:scale-75 shadow-lg"><Send className="w-5 h-5" /></button>
+                <input ref={inputRef} type="text" value={input} onChange={(e) => setInput(e.target.value)} placeholder={isListening ? "Listening..." : "Query ALEX..."} className="flex-1 min-w-0 bg-transparent text-gray-100 px-4 py-3 outline-none text-sm font-bold placeholder:text-gray-500" disabled={isLoading} />
+                <button type="button" onClick={toggleSpeech} className={`p-3 rounded-xl transition-colors shrink-0 ${isListening ? 'text-red-500 bg-red-500/10' : 'text-gray-400 hover:text-white'}`}><Mic className="w-5 h-5" /></button>
+                <button type="submit" disabled={isLoading || !input.trim()} className="p-4 bg-accent text-white rounded-2xl hover:bg-accent/80 transition-all active:scale-75 shadow-lg shrink-0"><Send className="w-5 h-5" /></button>
             </form>
           </div>
         </div>

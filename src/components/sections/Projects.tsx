@@ -12,15 +12,6 @@ const Projects: React.FC = () => {
         <ScrollReveal direction="up">
           <div className="mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
              <div>
-                 <div className="inline-flex items-center gap-3 px-6 py-2.5 rounded-full border border-border bg-surface/80 backdrop-blur-md shadow-xl hover:scale-105 transition-transform duration-300 cursor-default mb-8">
-                      <span className="relative flex h-3 w-3">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500 shadow-[0_0_12px_rgba(6,182,212,0.9)]"></span>
-                      </span>
-                      <span className="text-xs font-black font-mono text-secondary tracking-[0.2em] uppercase">Repo: Synchronized</span>
-                 </div>
-                 
-                 <span className="text-secondary text-xs font-mono uppercase tracking-[0.4em]">Product Portfolio</span>
                  <h2 className="text-5xl md:text-7xl font-black text-textMain mt-3 tracking-tighter">Selected Works</h2>
              </div>
              <p className="text-textMuted text-base max-w-lg text-right hidden md:block border-l-4 border-border pl-8 py-2">

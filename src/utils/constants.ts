@@ -121,7 +121,7 @@ export const PROJECTS: Project[] = [
       'Achieved ~2.6s cold start and sub-2s route transitions with lazy loading.'
     ],
     tech: ['Next.js', 'Gemini API', 'Prisma', 'Clerk', 'Tailwind CSS', 'Recharts', 'Vercel'],
-    links: { live: '#', github: '#' }
+    links: { live: 'https://train-ai-coach.vercel.app/', github: '#' }
   },
   {
     id: 'proj2',
@@ -134,7 +134,7 @@ export const PROJECTS: Project[] = [
       'Designed responsive frontend using Next.js + Tailwind CSS for visualizing drug predictions.'
     ],
     tech: ['Python', 'FastAPI', 'TensorFlow', 'Scikit-learn', 'Next.js', 'Tailwind CSS', 'Matplotlib'],
-    links: { github: '#' }
+    links: { github: 'https://github.com/sakshamXcode/Drug-Prediction-using-Genomic-Data' }
   }
 ];
 
