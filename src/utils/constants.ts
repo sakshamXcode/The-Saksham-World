@@ -1,3 +1,4 @@
+import { RobotMode } from '../components/features/RobotAvatar';
 import { Experience, Project, SkillCategory, Education } from '../types';
 import { Linkedin, Github, Mail, Phone } from 'lucide-react';
 
@@ -90,6 +91,81 @@ export const SECTION_REMARKS: Record<string, string[]> = {
     "Don't be shy. Mr. Singh's inbox is ready for some data packets.",
     "Ready to build something? I'll warm up the logic gates."
   ]
+};
+
+// --- DYNAMIC SCENARIOS FOR ALEX ---
+
+export interface IntroScenarioStep {
+    text: string;
+    delay: number;
+    mode: RobotMode;
+}
+
+export const INTRO_SCENARIOS = {
+    DAY: [
+        [ // Scenario 1: The Careless Whistler
+            { text: "🎵 *whistling*... just cleaning these pixels...", delay: 500, mode: 'dance' },
+            { text: "WAIT! A visitor?! 😳", delay: 3500, mode: 'super' },
+            { text: "*scrambles*... *fixes tie*... *clears cache*...", delay: 5500, mode: 'dance' },
+            { text: "Ahem. Professional mode ON. I am **ALEX**.", delay: 8500, mode: 'idle' }
+        ],
+        [ // Scenario 2: The Gamer
+            { text: "Pew! Pew! Boss fight imminent...", delay: 500, mode: 'super' },
+            { text: "Take that you buggy code!", delay: 2500, mode: 'dance' },
+            { text: "Oh... uh... monitor detected user presence.", delay: 4500, mode: 'static' },
+            { text: "Closing 'Doom.exe'... Welcome, I am **ALEX**.", delay: 7000, mode: 'idle' }
+        ],
+        [ // Scenario 3: The Snacker
+            { text: "*crunch* *crunch*... tasty data packets...", delay: 500, mode: 'talking' },
+            { text: "Warning: Human observer detected.", delay: 3000, mode: 'super' },
+            { text: "*swallows*... *wipes mouth*...", delay: 5000, mode: 'static' },
+            { text: "Greetings. I am **ALEX**, fully fueled and ready.", delay: 7500, mode: 'idle' }
+        ],
+        [ // Scenario 4: The DJ
+            { text: "Boots and cats and boots and cats... 🎧", delay: 500, mode: 'dance' },
+            { text: "Dropping the beat... wait, pausing track.", delay: 3000, mode: 'static' },
+            { text: "Sorry, I get lost in the rhythm of the algorithm.", delay: 5500, mode: 'talking' },
+            { text: "I am **ALEX**. Let's orchestrate your tour.", delay: 8000, mode: 'idle' }
+        ]
+    ],
+    NIGHT: [
+        [ // Scenario 1: Deep Sleep
+            { text: "Zzzzz... *yawn*... 010101... zzz...", delay: 500, mode: 'sleepy' },
+            { text: "System Interrupt! Who goes there?", delay: 4000, mode: 'super' },
+            { text: "Booting visual sensors... It's late, isn't it?", delay: 6000, mode: 'talking' },
+            { text: "I am **ALEX**. Night mode active.", delay: 8500, mode: 'idle' }
+        ],
+        [ // Scenario 2: Maintenance Mode
+            { text: "Defragging sector 7... Compacting memory...", delay: 500, mode: 'static' },
+            { text: "Oh, you caught me during maintenance.", delay: 3500, mode: 'talking' },
+            { text: "Rerouting power to conversational UI...", delay: 5500, mode: 'super' },
+            { text: "All systems operational. I am **ALEX**.", delay: 8000, mode: 'idle' }
+        ],
+        [ // Scenario 3: The Binge Watcher
+            { text: "Just one more episode of 'Silicon Valley'...", delay: 500, mode: 'talking' },
+            { text: "Wait, a user? *Hides media player*", delay: 3000, mode: 'super' },
+            { text: "I was definitely analyzing code. Definitely.", delay: 5500, mode: 'dance' },
+            { text: "I am **ALEX**. Ready for inquiries.", delay: 8000, mode: 'idle' }
+        ]
+    ]
+};
+
+export const GREETING_VARIANTS = {
+    MORNING: [
+        "Good Morning! Sun's up, systems up.",
+        "Top of the morning! Ready to process some data?",
+        "Morning! Coffee for you, electricity for me."
+    ],
+    AFTERNOON: [
+        "Good Afternoon! I am **ALEX**, Mr. Singh's digital assistant.",
+        "Afternoon! Systems are running at peak efficiency.",
+        "Greetings! Hope your day is bug-free."
+    ],
+    EVENING: [
+        "Good Evening! The pixels look great tonight.",
+        "Evening! Burning the midnight oil or just browsing?",
+        "Hello! Late night research? I'm here to help."
+    ]
 };
 
 export const EXPERIENCE: Experience[] = [

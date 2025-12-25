@@ -3,7 +3,7 @@ import { Send, User, X, Mic, Palette } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import RobotAvatar, { RobotMode } from './RobotAvatar';
 import { ChatMessage } from '@/src/types';
-import { TICKLE_REMARKS } from '@/src/utils/constants';
+import { TICKLE_REMARKS, INTRO_SCENARIOS, GREETING_VARIANTS, IntroScenarioStep } from '@/src/utils/constants';
 import { generateResponseStream } from '@/src/services/geminiService';
 
 interface AIChatBotProps {
@@ -124,58 +124,27 @@ const AIChatBot: React.FC<AIChatBotProps> = ({ isOpen, isBooting, onToggle, acti
     }
   }, [isHovered, isOpen, introDone, avatarModeOverride]);
 
-  // 2. Intro Sequence (Run Once)
+  // 2. Intro Sequence (Run Once - Randomized)
   useEffect(() => {
       if (!isBooting && !introDone && !introInProgress.current) {
           introInProgress.current = true;
           
           const hour = new Date().getHours();
           const isLateNight = hour >= 23 || hour < 6;
+          
+          // Select Scenarios based on time
+          const timeKey = isLateNight ? 'NIGHT' : 'DAY';
+          const scenarios = INTRO_SCENARIOS[timeKey];
+          
+          // Pick a random scenario from the array
+          const randomScenario = scenarios[Math.floor(Math.random() * scenarios.length)] as IntroScenarioStep[];
 
-          let sequence: { text: string; delay: number; mode: RobotMode }[] = [];
-
-          if (isLateNight) {
-              sequence = [
-                  { 
-                      text: "Zzzzz... *yawn*... Working late? I was in sleep mode! 😴", 
-                      delay: 500, 
-                      mode: 'sleepy' 
-                  },
-                  { text: "Booting up systems...", delay: 4500, mode: 'static' },
-                  { text: "Hi, I am **ALEX**.", delay: 6500, mode: 'idle' },
-              ];
-          } else {
-              // Daytime Sequence: Careless worker caught off guard
-              sequence = [
-                  { 
-                      text: "🎵 *whistling*... just cleaning these pixels...", 
-                      delay: 500, 
-                      mode: 'dance' // Careless vibe
-                  },
-                  { 
-                      text: "WAIT! A visitor?! 😳", 
-                      delay: 3500, 
-                      mode: 'super' // Shocked/Alert
-                  },
-                  { 
-                      text: "*scrambles*... *fixes tie*... *clears cache*...", 
-                      delay: 5500, 
-                      mode: 'dance' // Fidgety
-                  },
-                  { 
-                      text: "Ahem. Professional mode ON. I am **ALEX**.", 
-                      delay: 8500, 
-                      mode: 'idle' // Composed
-                  },
-              ];
-          }
-
-          sequence.forEach((item, index) => {
+          randomScenario.forEach((item, index) => {
               setTimeout(() => {
                   setIntroMessage(item.text);
                   setAvatarModeOverride(item.mode);
 
-                  if (index === sequence.length - 1) {
+                  if (index === randomScenario.length - 1) {
                       setTimeout(() => {
                           setIntroMessage(null);
                           setAvatarModeOverride(null);
@@ -189,16 +158,20 @@ const AIChatBot: React.FC<AIChatBotProps> = ({ isOpen, isBooting, onToggle, acti
 
   // --- CHAT WINDOW LOGIC ---
 
-  // Initial Greeting when Chat Opens
+  // Initial Greeting when Chat Opens (Randomized)
   useEffect(() => {
     if (isOpen && messages.length === 0 && !isLoading) {
         setIsLoading(true);
         const hour = new Date().getHours();
-        let greeting = "Good Morning";
-        if (hour >= 12 && hour < 17) greeting = "Good Afternoon";
-        if (hour >= 17) greeting = "Good Evening";
+        
+        let variants = GREETING_VARIANTS.MORNING;
+        if (hour >= 12 && hour < 17) variants = GREETING_VARIANTS.AFTERNOON;
+        if (hour >= 17) variants = GREETING_VARIANTS.EVENING;
 
-        const fullGreeting = `${greeting}! I am **ALEX**, Mr. Singh's digital assistant. \n\nI can answer questions about his **Experience**, **Projects**, or **Technical Skills**. What would you like to know?`;
+        // Pick Random Greeting
+        const greeting = variants[Math.floor(Math.random() * variants.length)];
+
+        const fullGreeting = `${greeting}\n\nI can answer questions about his **Experience**, **Projects**, or **Technical Skills**. What would you like to know?`;
 
         setTimeout(() => {
             setIsLoading(false);
@@ -231,19 +204,49 @@ const AIChatBot: React.FC<AIChatBotProps> = ({ isOpen, isBooting, onToggle, acti
     const modelMsgId = 'm-' + Date.now();
     setMessages(prev => [...prev, { id: modelMsgId, role: 'model', text: '', isThinking: true }]);
 
+    let streamInterval: any = null;
+
     try {
         const stream = generateResponseStream(userText);
-        let fullText = "";
+        let fullBuffer = "";
+        let displayedText = "";
+        let isStreamFinished = false;
+
+        // Start Typewriter Interval
+        // This decouples the network speed from the reading speed
+        streamInterval = setInterval(() => {
+            if (displayedText.length < fullBuffer.length) {
+                displayedText += fullBuffer[displayedText.length];
+                
+                setMessages(prev => prev.map(m => 
+                    m.id === modelMsgId 
+                        ? { ...m, text: displayedText, isThinking: false } 
+                        : m
+                ));
+            } else if (isStreamFinished) {
+                // Only stop loading when we have printed everything AND the stream is closed
+                clearInterval(streamInterval);
+                setIsLoading(false);
+            }
+        }, 20); // 20ms per character
+
+        // Consume Stream
         for await (const chunk of stream) {
-            fullText += chunk;
-            setMessages(prev => {
-                const newMsgs = [...prev];
-                const index = newMsgs.findIndex(m => m.id === modelMsgId);
-                if (index !== -1) newMsgs[index] = { ...newMsgs[index], text: fullText, isThinking: false };
-                return newMsgs;
-            });
+            fullBuffer += chunk;
         }
-    } catch (err) { console.error(err); } finally { setIsLoading(false); }
+        
+        isStreamFinished = true;
+
+    } catch (err) { 
+        console.error(err); 
+        if (streamInterval) clearInterval(streamInterval);
+        setIsLoading(false);
+        setMessages(prev => prev.map(m => 
+            m.id === modelMsgId 
+                ? { ...m, text: "⚠️ System malfunction. Please retry.", isThinking: false } 
+                : m
+        ));
+    }
   };
 
   // --- RENDER HELPERS ---
